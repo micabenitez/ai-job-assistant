@@ -7,8 +7,8 @@ public interface PdfTextExtractor {
      *
      * @param pdfBytes Contenido binario del archivo PDF.
      * @return Texto plano extraído y sanitizado.
-     * @throws com.aijobassistant.shared.exception.InvalidDocumentException si el documento no es un PDF válido o está protegido.
-     * @throws com.aijobassistant.shared.exception.DocumentProcessingException si ocurre un error inesperado durante la lectura.
+     * @throws com.aijobassistant.ai.shared.exception.InvalidDocumentException si el documento no es un PDF válido o está protegido.
+     * @throws com.aijobassistant.ai.shared.exception.DocumentProcessingException si ocurre un error inesperado durante la lectura.
      */
     String extractText(byte[] pdfBytes);
 }
