@@ -16,6 +16,18 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(LlmServiceException.class)
+    public ResponseEntity<ErrorResponseDto> handleLlmServiceException(
+            LlmServiceException ex, HttpServletRequest request) {
+        ErrorResponseDto error = ErrorResponseDto.of(
+                HttpStatus.BAD_GATEWAY.value(),
+                HttpStatus.BAD_GATEWAY.getReasonPhrase(),
+                "Error en la integración con el servicio externo de IA: " + ex.getMessage(),
+                request.getRequestURI()
+        );
+        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(error);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, Object>> handleValidationExceptions(
             MethodArgumentNotValidException ex, HttpServletRequest request) {
