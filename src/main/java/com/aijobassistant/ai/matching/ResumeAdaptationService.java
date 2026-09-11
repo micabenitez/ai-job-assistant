@@ -170,6 +170,29 @@ public class ResumeAdaptationService {
         }
     }
 
+    @Transactional(readOnly = true)
+    public AdaptedResumeResponse getAdaptedResumeById(UUID adaptedResumeId) {
+        AdaptedResume adaptedResume = adaptedResumeRepository.findById(adaptedResumeId)
+                .orElseThrow(() -> new DocumentProcessingException("No se encontró el CV adaptado con ID: " + adaptedResumeId, null));
+
+        try {
+            StructuredResumeData content = objectMapper.readValue(
+                    adaptedResume.getAdaptedContent(),
+                    StructuredResumeData.class
+            );
+
+            return new AdaptedResumeResponse(
+                    adaptedResume.getId(),
+                    adaptedResume.getMatchAnalysis().getId(),
+                    content,
+                    adaptedResume.getAdaptationNotes(),
+                    adaptedResume.getCreatedAt()
+            );
+        } catch (JsonProcessingException e) {
+            throw new DocumentProcessingException("Error al parsear el contenido estructurado del CV.", e);
+        }
+    }
+
     private record AdaptationOutput(
             String adaptationNotes,
             StructuredResumeData adaptedResume
