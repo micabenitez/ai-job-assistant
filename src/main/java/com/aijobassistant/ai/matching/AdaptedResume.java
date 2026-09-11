@@ -57,6 +57,10 @@ public class AdaptedResume {
         return createdAt;
     }
 
+    public void updateContent(String newAdaptedContent) {
+        this.adaptedContent = Objects.requireNonNull(newAdaptedContent, "El contenido adaptado no puede ser nulo");
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
