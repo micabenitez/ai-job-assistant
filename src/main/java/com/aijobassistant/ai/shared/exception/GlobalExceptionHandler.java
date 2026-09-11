@@ -16,6 +16,20 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(HallucinationDetectedException.class)
+    public ResponseEntity<Map<String, Object>> handleHallucinationDetected(
+            HallucinationDetectedException ex, HttpServletRequest request) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("timestamp", Instant.now());
+        body.put("status", HttpStatus.UNPROCESSABLE_ENTITY.value());
+        body.put("error", "Violación de Regla Anti-Alucinación");
+        body.put("message", ex.getMessage());
+        body.put("unverifiedSkills", ex.getUnverifiedSkills());
+        body.put("path", request.getRequestURI());
+
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(body);
+    }
+
     @ExceptionHandler(LlmServiceException.class)
     public ResponseEntity<ErrorResponseDto> handleLlmServiceException(
             LlmServiceException ex, HttpServletRequest request) {
