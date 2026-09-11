@@ -4,14 +4,26 @@ import java.util.List;
 
 public record StructuredResumeData(
         String fullName,
+        String contactInfo,
         String professionalSummary,
+        List<ProjectItem> projects,
         List<ExperienceItem> experiences,
-        List<EducationItem> education,
+        List<EducationInstitution> education,
+        List<ComplementaryEducationItem> complementaryEducation,
+        List<SkillCategory> technicalSkillsCategories,
         List<String> technicalSkills,
-        List<String> softSkills,
-        List<String> languages,
-        List<String> certifications
+        List<String> languages
 ) {
+    public record ProjectItem(
+            String name,
+            String year,
+            List<String> overviewParagraphs,
+            List<String> highlights,
+            List<String> technologiesUsed,
+            String repoLink,
+            String moreProjectsLink
+    ) {}
+
     public record ExperienceItem(
             String role,
             String company,
@@ -20,9 +32,19 @@ public record StructuredResumeData(
             List<String> technologiesUsed
     ) {}
 
-    public record EducationItem(
-            String degree,
+    public record EducationInstitution(
             String institution,
-            String year
+            List<String> items
+    ) {}
+
+    public record ComplementaryEducationItem(
+            String title,
+            String entity,
+            String period
+    ) {}
+
+    public record SkillCategory(
+            String category,
+            String skills
     ) {}
 }

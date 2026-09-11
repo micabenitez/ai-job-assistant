@@ -27,13 +27,15 @@ class AntiHallucinationValidatorTest {
         Resume originalResume = new Resume("cv.pdf", "Experiencia con Java, Spring Boot y PostgreSQL.");
 
         StructuredResumeData adaptedData = new StructuredResumeData(
-                "Candidato",
-                "Resumen",
+                "Micaela Benitez",
+                "Moreno, Buenos Aires | mabenittez@gmail.com",
+                "Resumen profesional...",
                 Collections.emptyList(),
                 Collections.emptyList(),
-                List.of("Java", "PostgreSQL"), // Ambas existen en el original
                 Collections.emptyList(),
                 Collections.emptyList(),
+                Collections.emptyList(),
+                List.of("Java", "PostgreSQL"),
                 Collections.emptyList()
         );
 
@@ -46,13 +48,15 @@ class AntiHallucinationValidatorTest {
         Resume originalResume = new Resume("cv.pdf", "Experiencia con Java y Spring Boot.");
 
         StructuredResumeData adaptedDataWithHallucination = new StructuredResumeData(
-                "Candidato",
-                "Resumen",
+                "Micaela Benitez",
+                "Moreno, Buenos Aires | mabenittez@gmail.com",
+                "Resumen profesional...",
                 Collections.emptyList(),
                 Collections.emptyList(),
-                List.of("Java", "Kubernetes"), // Kubernetes NO está en el original
                 Collections.emptyList(),
                 Collections.emptyList(),
+                Collections.emptyList(),
+                List.of("Java", "PostgreSQL"),
                 Collections.emptyList()
         );
 
@@ -61,6 +65,6 @@ class AntiHallucinationValidatorTest {
                 () -> validator.validate(originalResume, adaptedDataWithHallucination)
         );
 
-        assertTrue(ex.getUnverifiedSkills().contains("Kubernetes"));
+        assertTrue(ex.getUnverifiedSkills().contains("PostgreSQL"));
     }
 }

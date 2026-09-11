@@ -16,39 +16,71 @@ import org.springframework.transaction.annotation.Transactional;
 public class ResumeAdaptationService {
 
     private static final String ADAPTATION_SYSTEM_PROMPT = """
-            Eres un redactor y optimizador profesional de currículums para el sector tecnológico.
-            Tu función es generar una versión adaptada del currículum original para maximizar su alineación con una oferta de empleo específica.
+            Eres un especialista en redacción técnica estratégica de CVs.
+            Tu objetivo es adaptar el currículum conservando con exactitud la identidad visual y estructura del documento original.
+
+            REGLA DE INTEGRIDAD:
+            NO INVENTES NADA. Mantén estrictamente los datos de contacto, educación y proyectos reales provistos en el CV original.
             
-            REGLAS INQUEBRANTABLES:
-            1. REGLA FUNDAMENTAL: NO INVENTAR INFORMACIÓN.
-            2. NO agregues bajo ninguna circunstancia tecnologías, certificaciones, empresas, cargos o años de experiencia que no estén presentes en el CV original.
-            3. Si la vacante requiere tecnologías que el candidato NO posee, NO las agregues.
-            4. SOLAMENTE PUEDES:
-               - Reorganizar las secciones para destacar las experiencias más afines a la vacante.
-               - Reescribir el resumen profesional enfatizando las fortalezas reales del candidato frente al rol.
-               - Mejorar la redacción y síntesis de las responsabilidades reales.
-               - Priorizar las palabras clave que el candidato verdaderamente domina y que la vacante solicita.
-            
-            Debes responder estrictamente en formato JSON con la siguiente estructura:
+            DIRECTIVAS DE ADAPTACIÓN:
+            1. CONTACTO Y PERFIL:
+               - Conserva la línea de contacto exacta (Ubicación | Email | Teléfono | LinkedIn).
+               - Redacta el resumen profesional inmediatamente después del contacto (sin título previo), en primera persona, destacando el perfil del candidato adaptado al rol.
+            2. EXPERIENCIA EN PROYECTOS:
+               - Usa el título "PROYECTO DESTACADO" o "EXPERIENCIA EN PROYECTOS".
+               - Encabezado: [Nombre] | [Año].
+               - Viñetas en primera persona ("Desarrollé", "Implementé", "Configuré") estructuradas como [Verbo de Acción] + [Tecnología] + [Impacto/Resultado].
+               - Conserva la viñeta final de Tecnologías y los enlaces a GitHub.
+            3. EDUCACIÓN Y EDUCACIÓN COMPLEMENTARIA:
+               - Mantén la institución y las viñetas estructuradas como: [Título/Carrera] | [Porcentaje/Estado] | [Periodo].
+            4. HABILIDADES TÉCNICAS (AGRUPADAS):
+               - Agrupa en categorías: "Programación", "Bases de datos", "Herramientas", "Control de versiones", "Metodologías ágiles". Prioriza en cada categoría las tecnologías afines a la oferta.
+            5. IDIOMAS: Conserva el nivel real (ej. "Inglés (B1)").
+
+            Responde estrictamente en formato JSON con la siguiente estructura:
             {
-              "adaptationNotes": "Explicación breve de los cambios realizados y secciones priorizadas",
+              "adaptationNotes": "Notas de adaptación",
               "adaptedResume": {
-                "fullName": "Nombre original",
-                "professionalSummary": "Resumen adaptado destacando fortalezas reales",
-                "experiences": [
+                "fullName": "Juan Perez",
+                "contactInfo": "Moreno, Buenos Aires | email@gmail.com | +54 9 1112344465 | linkedin.com/in/juanperez",
+                "professionalSummary": "Texto del perfil adaptado en primera persona...",
+                "projects": [
                   {
-                    "role": "Cargo",
-                    "company": "Empresa",
-                    "duration": "Periodo",
-                    "responsibilities": ["responsabilidades redactadas con impacto"],
-                    "technologiesUsed": ["tecnologías reales"]
+                    "name": "ForoHub - REST API Backend",
+                    "year": "2026",
+                    "overviewParagraphs": ["Desarrollé una API REST..."],
+                    "highlights": ["Implementé...", "Incorporé...", "Dockericé..."],
+                    "technologiesUsed": ["Java", "Spring Boot", "PostgreSQL", "Flyway", "Spring Security", "JWT", "JUnit", "Docker", "GitHub Actions", "Maven"],
+                    "repoLink": "GitHub: forohub",
+                    "moreProjectsLink": "Más proyectos en github.com/juanperez"
                   }
                 ],
-                "education": [],
-                "technicalSkills": ["habilidades técnicas reales coincidentes o relevantes"],
-                "softSkills": ["habilidades blandas"],
-                "languages": ["idiomas"],
-                "certifications": []
+                "experiences": [],
+                "education": [
+                  {
+                    "institution": "Universidad Nacional de General Sarmiento",
+                    "items": [
+                      "Licenciatura en Sistemas | 81% aprobado | Mar. 2019 - Actualidad",
+                      "Tecnicatura Universitaria en Informática | Graduada | Ago. 2025"
+                    ]
+                  }
+                ],
+                "complementaryEducation": [
+                  {
+                    "title": "PROGRAMA ONE: TECH FOUNDATION - Especialización Backend",
+                    "entity": "Oracle Next Education",
+                    "period": "Jul. 2025 – Mar. 2026"
+                  }
+                ],
+                "technicalSkillsCategories": [
+                  {"category": "Programación", "skills": "Java, Spring Boot"},
+                  {"category": "Bases de datos", "skills": "PostgreSQL, MySQL"},
+                  {"category": "Herramientas", "skills": "Postman, Swagger, Excel, Word"},
+                  {"category": "Control de versiones", "skills": "Git, GitHub"},
+                  {"category": "Metodologías ágiles", "skills": "Scrum"}
+                ],
+                "technicalSkills": ["Java", "Spring Boot", "PostgreSQL", "MySQL", "Git", "Docker"],
+                "languages": ["Inglés (B1)"]
               }
             }
             """;
