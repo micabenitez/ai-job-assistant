@@ -237,4 +237,29 @@ public class PdfBoxResumeGenerator {
                 .replaceAll("[^\\x20-\\x7EáéíóúÁÉÍÓÚñÑüÜ°%–—()\\[\\],.:;\"'/?!@#&*+-]", "")
                 .trim();
     }
+    private void drawClickableLink(PDDocument doc, PDPage page, PDPageContentStream stream,
+                                   String displayText, String uri, PDFont font, float fontSize,
+                                   float x, float y) throws IOException {
+        drawText(stream, displayText, font, fontSize, x, y);
+
+        float textWidth = getTextWidth(displayText, font, fontSize);
+
+        PDRectangle linkBox = new PDRectangle(x, y - 2f, textWidth, fontSize + 3f);
+
+        org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationLink link =
+                new org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationLink();
+        link.setRectangle(linkBox);
+
+        org.apache.pdfbox.pdmodel.interactive.annotation.PDBorderStyleDictionary border =
+                new org.apache.pdfbox.pdmodel.interactive.annotation.PDBorderStyleDictionary();
+        border.setWidth(0);
+        link.setBorderStyle(border);
+
+        org.apache.pdfbox.pdmodel.interactive.action.PDActionURI action =
+                new org.apache.pdfbox.pdmodel.interactive.action.PDActionURI();
+        action.setURI(uri);
+        link.setAction(action);
+
+        page.getAnnotations().add(link);
+    }
 }

@@ -20,6 +20,9 @@ COPY --from=builder /build/target/*.jar app.jar
 RUN chown -R appuser:appgroup /app
 USER appuser
 
+ENV JAVA_TOOL_OPTIONS="-Xms128m -Xmx320m -XX:+UseSerialGC -XX:+TieredCompilation -XX:TieredStopAtLevel=1"
+
+ENV PORT=8080
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "/app/app.jar"]
+ENTRYPOINT ["sh", "-c", "java -Dserver.port=${PORT:-8080} -jar /app/app.jar"]

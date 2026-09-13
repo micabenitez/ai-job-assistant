@@ -12,6 +12,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.UUID;
+
 @Service
 public class ResumeAdaptationService {
 
@@ -140,6 +142,54 @@ public class ResumeAdaptationService {
 
         } catch (JsonProcessingException e) {
             throw new DocumentProcessingException("Error al procesar el JSON emitido en la adaptación del CV.", e);
+        }
+    }
+
+    @Transactional
+    public AdaptedResumeResponse updateAdaptedResumeContent(UUID adaptedResumeId, StructuredResumeData updatedContent) {
+        AdaptedResume adaptedResume = adaptedResumeRepository.findById(adaptedResumeId)
+                .orElseThrow(() -> new DocumentProcessingException("No se encontró el CV adaptado con ID: " + adaptedResumeId, null));
+
+        antiHallucinationValidator.validate(adaptedResume.getMatchAnalysis().getResume(), updatedContent);
+
+        try {
+            String updatedJson = objectMapper.writeValueAsString(updatedContent);
+            adaptedResume.updateContent(updatedJson);
+
+            AdaptedResume saved = adaptedResumeRepository.save(adaptedResume);
+
+            return new AdaptedResumeResponse(
+                    saved.getId(),
+                    saved.getMatchAnalysis().getId(),
+                    updatedContent,
+                    saved.getAdaptationNotes(),
+                    saved.getCreatedAt()
+            );
+        } catch (JsonProcessingException e) {
+            throw new DocumentProcessingException("Error al serializar el contenido modificado del CV.", e);
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public AdaptedResumeResponse getAdaptedResumeById(UUID adaptedResumeId) {
+        AdaptedResume adaptedResume = adaptedResumeRepository.findById(adaptedResumeId)
+                .orElseThrow(() -> new DocumentProcessingException("No se encontró el CV adaptado con ID: " + adaptedResumeId, null));
+
+        try {
+            StructuredResumeData content = objectMapper.readValue(
+                    adaptedResume.getAdaptedContent(),
+                    StructuredResumeData.class
+            );
+
+            return new AdaptedResumeResponse(
+                    adaptedResume.getId(),
+                    adaptedResume.getMatchAnalysis().getId(),
+                    content,
+                    adaptedResume.getAdaptationNotes(),
+                    adaptedResume.getCreatedAt()
+            );
+        } catch (JsonProcessingException e) {
+            throw new DocumentProcessingException("Error al parsear el contenido estructurado del CV.", e);
         }
     }
 
