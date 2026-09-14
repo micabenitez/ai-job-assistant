@@ -28,8 +28,8 @@ public class ResumeAdaptationService {
             1. CONTACTO Y PERFIL:
                - Conserva la línea de contacto exacta (Ubicación | Email | Teléfono | LinkedIn).
                - Redacta el resumen profesional inmediatamente después del contacto (sin título previo), en primera persona, destacando el perfil del candidato adaptado al rol.
-            2. EXPERIENCIA EN PROYECTOS:
-               - Usa el título "PROYECTO DESTACADO" o "EXPERIENCIA EN PROYECTOS".
+            2. EXPERIENCIA EN PROYECTOS O LABORAL:
+               - Título de sección preferido: "EXPERIENCIA EN PROYECTOS" (si solo hay proyectos) o "EXPERIENCIA LABORAL" (si hay trabajos reales).
                - Encabezado: [Nombre] | [Año].
                - Viñetas en primera persona ("Desarrollé", "Implementé", "Configuré") estructuradas como [Verbo de Acción] + [Tecnología] + [Impacto/Resultado].
                - Conserva la viñeta final de Tecnologías y los enlaces a GitHub.
