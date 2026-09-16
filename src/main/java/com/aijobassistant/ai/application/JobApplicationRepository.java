@@ -21,7 +21,6 @@ public interface JobApplicationRepository extends
             "AND (CAST(:search AS string) IS NULL OR (" +
             "  LOWER(j.companyName) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) " +
             "  OR LOWER(j.roleTitle) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))" +
-            ")) " +
-            "ORDER BY j.createdAt DESC")
+            ")) " + "ORDER BY j.createdAt DESC")
     List<JobApplication> findAllWithFilters(@Param("status") ApplicationStatus status, @Param("search") String search);
 }
