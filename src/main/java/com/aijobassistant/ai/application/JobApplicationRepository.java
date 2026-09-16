@@ -1,4 +1,4 @@
-package com.aijobassistant.ai.application.repository;
+package com.aijobassistant.ai.application;
 
 import com.aijobassistant.ai.application.model.ApplicationStatus;
 import com.aijobassistant.ai.application.model.JobApplication;
