@@ -5,7 +5,6 @@ import com.aijobassistant.ai.application.dto.JobApplicationResponse;
 import com.aijobassistant.ai.application.dto.UpdateJobApplicationRequest;
 import com.aijobassistant.ai.application.model.ApplicationStatus;
 import com.aijobassistant.ai.application.model.JobApplication;
-import com.aijobassistant.ai.application.repository.JobApplicationRepository;
 import com.aijobassistant.ai.matching.AdaptedResume;
 import com.aijobassistant.ai.matching.AdaptedResumeRepository;
 import com.aijobassistant.ai.matching.MatchAnalysis;
