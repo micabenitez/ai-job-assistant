@@ -11,15 +11,17 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface JobApplicationRepository extends JpaRepository<JobApplication, UUID> {
+public interface JobApplicationRepository extends 
+        JpaRepository<JobApplication, UUID> {
 
     @Query("SELECT j FROM JobApplication j " +
             "LEFT JOIN FETCH j.adaptedResume " +
             "LEFT JOIN FETCH j.matchAnalysis " +
             "WHERE (:status IS NULL OR j.status = :status) " +
-            "AND (:search IS NULL OR LOWER(j.companyName) LIKE LOWER(CONCAT('%', :search, '%')) " +
-            "OR LOWER(j.roleTitle) LIKE LOWER(CONCAT('%', :search, '%'))) " +
+            "AND (CAST(:search AS string) IS NULL OR (" +
+            "  LOWER(j.companyName) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) " +
+            "  OR LOWER(j.roleTitle) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))" +
+            ")) " +
             "ORDER BY j.createdAt DESC")
-    List<JobApplication> findAllWithFilters(@Param("status") ApplicationStatus status,
-                                            @Param("search") String search);
+    List<JobApplication> findAllWithFilters(@Param("status") ApplicationStatus status, @Param("search") String search);
 }
